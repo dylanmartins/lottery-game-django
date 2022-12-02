@@ -20,6 +20,10 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # Makes email as the main field
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
     def generate_access_token(self):
         payload = {
             "user_uuid": str(self.uuid),

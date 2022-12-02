@@ -11,6 +11,7 @@ router.trailing_slash = "/?"
 app_name = "users"
 urlpatterns = [
     re_path(r"^", include(router.urls)),
-    re_path(r"^sign-in", views.UsersAPIView.as_view({"post": "sign_in"}), name="user-sign-in"),
-    re_path(r"^test", views.UsersAPIView.as_view({"get": "test"}), name="user-test"),
+    re_path(r"register", views.UsersAPIView.as_view({"post": "register"}), name="user-register"),
+    re_path(r"token", views.UsersAPIView.as_view({"post": "get_token"}), name="user-token"),
+    re_path(r"me", views.AuthenticatedUsersAPIView.as_view({"get": "retrieve"}), name="user-retrieve"),
 ]

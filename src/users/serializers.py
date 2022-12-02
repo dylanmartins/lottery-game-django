@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from users.exceptions import ExternalReferenceExistsException
 
 from users.models import User
 

@@ -87,12 +87,6 @@ DATABASES = {
     }
 }
 
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
-    )
-}
-
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
