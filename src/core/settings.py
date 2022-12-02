@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "oauth2_provider",
     "users",
+    "lotteries",
 ]
 
 MIDDLEWARE = [
