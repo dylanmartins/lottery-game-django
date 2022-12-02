@@ -1,0 +1,8 @@
+Django==3.1.4
+psycopg2-binary==2.8.6
+djangorestframework==3.12.2
+pytest-django==4.1.0
+django-timezone-field==4.2.1
+PyJWT==1.7.1
+django-cors-headers==3.5.0
+django-oauth-toolkit
