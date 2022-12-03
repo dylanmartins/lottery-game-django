@@ -6,7 +6,6 @@ from rest_framework.authentication import BaseAuthentication
 
 
 class JWTAuthentication(BaseAuthentication):
-
     def authenticate(self, request):
         auth = request.headers.get("Authorization", "")
         if not isinstance(auth, str) or not auth.startswith("Bearer"):

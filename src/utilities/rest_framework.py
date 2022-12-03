@@ -7,10 +7,10 @@ from rest_framework import mixins, viewsets
 # it doesn't make sense to change a lottery game after you played.
 # So, I created this "utilities" folder in case we want to make more customized stuff :)
 class CreateReadViewset(
-    mixins.CreateModelMixin, 
+    mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
-    viewsets.GenericViewSet
+    viewsets.GenericViewSet,
 ):
     """
     A viewset that provides `retrieve`, `create`, and `list` actions.
@@ -18,4 +18,5 @@ class CreateReadViewset(
     To use it, override the class and set the `.queryset` and
     `.serializer_class` attributes.
     """
+
     pass

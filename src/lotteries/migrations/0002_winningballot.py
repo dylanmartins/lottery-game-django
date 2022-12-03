@@ -9,16 +9,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lotteries', '0001_initial'),
+        ("lotteries", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='WinningBallot',
+            name="WinningBallot",
             fields=[
-                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False, unique=True)),
-                ('winning_games', django.contrib.postgres.fields.ArrayField(base_field=models.UUIDField(editable=False, unique=True), default=list, size=None)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "uuid",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                        unique=True,
+                    ),
+                ),
+                (
+                    "winning_games",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.UUIDField(editable=False, unique=True),
+                        default=list,
+                        size=None,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
         ),
     ]

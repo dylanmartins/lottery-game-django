@@ -5,10 +5,17 @@ from users.models import User
 
 
 class LotteryGameSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
+    user = serializers.PrimaryKeyRelatedField(
+        required=True, queryset=User.objects.all()
+    )
     # NOTE: We could check for duplicate items inside `numbers`,
     # but this is a small detail so I'll leave it open
-    numbers = serializers.ListField(required=True, child=serializers.IntegerField(), max_length=LOTTERY_GAME_SIZE, min_length=LOTTERY_GAME_SIZE)
+    numbers = serializers.ListField(
+        required=True,
+        child=serializers.IntegerField(),
+        max_length=LOTTERY_GAME_SIZE,
+        min_length=LOTTERY_GAME_SIZE,
+    )
 
     class Meta:
         model = LotteryGame

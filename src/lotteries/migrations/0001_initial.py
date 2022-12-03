@@ -18,13 +18,36 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='LotteryGame',
+            name="LotteryGame",
             fields=[
-                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False, unique=True)),
-                ('numbers', django.contrib.postgres.fields.ArrayField(base_field=models.IntegerField(db_index=True), default=list, size=5)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('winning_game', models.BooleanField(default=False)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='lottery_games', to=settings.AUTH_USER_MODEL)),
+                (
+                    "uuid",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                        unique=True,
+                    ),
+                ),
+                (
+                    "numbers",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.IntegerField(db_index=True),
+                        default=list,
+                        size=5,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("winning_game", models.BooleanField(default=False)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="lottery_games",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

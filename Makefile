@@ -32,4 +32,9 @@ isort-check:
 
 isort-fix:
 	$(docker) isort .
-    
+
+black-check:
+	$(docker) black --check .
+
+black-fix:
+	$(docker) black .
