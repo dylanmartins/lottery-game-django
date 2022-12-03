@@ -62,7 +62,7 @@ def test_get_user_api__success(api_client, valid_user):
 
     # first we generate the access token
     token = valid_user.generate_access_token()
-    # and then we send it as a cookie
+    # and then we send it as a header
     api_client.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
 
     response = api_client.get(reverse("users:user-retrieve"))

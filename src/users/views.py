@@ -55,11 +55,11 @@ class AuthenticatedUsersAPIView(GenericViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get_object(self, uuid):
+    def get_object(self, pk):
         queryset = self.get_queryset()
-        return get_object_or_404(queryset, uuid=uuid)
+        return get_object_or_404(queryset, uuid=pk)
 
     def retrieve(self, request):
-        obj = self.get_object(request.user.uuid)
+        obj = self.get_object(request.user.pk)
         serializer = self.serializer_class(obj)
         return Response(serializer.data, status=status.HTTP_200_OK)

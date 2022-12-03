@@ -39,3 +39,13 @@ def valid_user_b(valid_create_user_payload):
     return User.objects.create(
         **payload
     )
+
+
+@pytest.fixture
+def auth_api_client(valid_user):
+    client = APIClient()
+    # first we generate the access token
+    token = valid_user.generate_access_token()
+    # and then we send it as a header
+    client.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+    return client
