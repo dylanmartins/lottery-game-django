@@ -16,10 +16,26 @@ Including another URLconf
 from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
 
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Lottery API Docs",
+        default_version="v1",
+        description="""
+        This is a lottery application that allows users to play lottery games and check winning ballots.
+        Each day at midnight the lottery event will be considered closed and a random lottery winner will be selected from all participants for the day.""",  # noqa
+    ),
+    public=True,
+    permission_classes=[permissions.AllowAny],
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("users.urls", namespace="user")),
     path("", include("lotteries.urls", namespace="lottery")),
+    path("swagger", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
 ]
