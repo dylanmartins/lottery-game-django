@@ -7,12 +7,12 @@ app_name = "users"
 urlpatterns = [
     re_path(
         r"users/register",
-        views.UsersAPIView.as_view({"post": "register"}),
+        views.UsersRegisterAPIView.as_view({"post": "register"}),
         name="user-register",
     ),
     re_path(
         r"users/token",
-        views.UsersAPIView.as_view({"post": "get_token"}),
+        views.UsersTokenAPIView.as_view({"post": "get_token"}),
         name="user-token",
     ),
     re_path(

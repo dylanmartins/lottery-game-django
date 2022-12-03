@@ -18,6 +18,10 @@ class LotteryAPI(CreateReadViewset):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self) -> QuerySet[LotteryGame]:
+        if getattr(self, "swagger_fake_view", False):
+            # queryset just for schema generation metadata
+            return LotteryGame.objects.none()
+
         queryset = LotteryGame.objects.filter(user=self.request.user)
         return queryset
 

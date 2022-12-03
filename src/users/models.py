@@ -23,6 +23,11 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
+    def save(self, *args, **kwargs):
+        if not self.username:
+            self.username = uuid.uuid4().hex[:30]
+        return super().save(*args, **kwargs)
+
     def generate_access_token(self):
         payload = {
             "user_uuid": str(self.uuid),

@@ -24,7 +24,7 @@ def test_create_user_api__fails_email_already_exists(api_client, valid_user, val
 
     response = api_client.post(reverse("users:user-register"), data=valid_create_user_payload)
     assert response.status_code == 400
-    assert str(response.data["email"][0]) == "user with this Email address already exists."
+    assert str(response.data["email"][0]) == "Email test@gmail.com already exists"
 
     assert len(User.objects.all()) == 1
 

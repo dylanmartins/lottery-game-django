@@ -9,10 +9,10 @@ from rest_framework.viewsets import GenericViewSet
 
 from users.authentication import JWTAuthentication
 from users.models import User
-from users.serializers import UserSerializer
+from users.serializers import UserSerializer, UserTokenSerializer
 
 
-class UsersAPIView(GenericViewSet):
+class UsersRegisterAPIView(GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -39,6 +39,11 @@ class UsersAPIView(GenericViewSet):
         # for the first time
         data["access_token"] = f"Bearer {token}"
         return Response(data, status=status.HTTP_201_CREATED)
+
+
+class UsersTokenAPIView(GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserTokenSerializer
 
     def get_token(self, request: Request) -> Response:
         email = request.data.get("email")
