@@ -1,8 +1,9 @@
-from django.db import models
 import uuid
-from users.models import User
-from django.contrib.postgres.fields import ArrayField
 
+from django.contrib.postgres.fields import ArrayField
+from django.db import models
+
+from users.models import User
 
 LOTTERY_GAME_SIZE = 5
 

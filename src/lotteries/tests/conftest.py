@@ -1,6 +1,8 @@
-import pytest
-from lotteries.models import LOTTERY_GAME_SIZE, LotteryGame, WinningBallot
 import copy
+
+import pytest
+
+from lotteries.models import LOTTERY_GAME_SIZE, LotteryGame, WinningBallot
 
 
 @pytest.fixture

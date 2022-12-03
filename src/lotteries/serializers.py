@@ -1,6 +1,7 @@
-from lotteries.models import LotteryGame, LOTTERY_GAME_SIZE, WinningBallot
-from users.models import User
 from rest_framework import serializers
+
+from lotteries.models import LOTTERY_GAME_SIZE, LotteryGame, WinningBallot
+from users.models import User
 
 
 class LotteryGameSerializer(serializers.ModelSerializer):

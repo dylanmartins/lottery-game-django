@@ -1,6 +1,6 @@
-from users import views
-
 from django.urls import re_path
+
+from users import views
 
 app_name = "users"
 urlpatterns = [

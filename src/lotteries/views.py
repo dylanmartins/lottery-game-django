@@ -1,10 +1,12 @@
-from lotteries.models import LotteryGame, WinningBallot
-from lotteries.serializers import LotteryGameSerializer, WinningBallotSerializer
-from users.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated
-from utilities.rest_framework import CreateReadViewset
 from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ReadOnlyModelViewSet
+
+from lotteries.models import LotteryGame, WinningBallot
+from lotteries.serializers import (LotteryGameSerializer,
+                                   WinningBallotSerializer)
+from users.authentication import JWTAuthentication
+from utilities.rest_framework import CreateReadViewset
 
 
 class LotteryAPI(CreateReadViewset):

@@ -1,7 +1,7 @@
-from lotteries.models import LOTTERY_GAME_SIZE, LotteryGame, WinningBallot
+import pytest
 from django.urls import reverse
 
-import pytest
+from lotteries.models import LOTTERY_GAME_SIZE, LotteryGame, WinningBallot
 
 
 @pytest.mark.django_db(transaction=True, reset_sequences=True)

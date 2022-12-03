@@ -1,5 +1,6 @@
-from lotteries import views
 from rest_framework.routers import SimpleRouter
+
+from lotteries import views
 
 router = SimpleRouter()
 router.trailing_slash = "/?"

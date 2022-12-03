@@ -1,6 +1,7 @@
+import copy
+
 import pytest
 from rest_framework.test import APIClient
-import copy
 
 from users.models import User
 

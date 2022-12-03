@@ -5,4 +5,4 @@ pytest-django==4.1.0
 django-timezone-field==4.2.1
 PyJWT==1.7.1
 django-cors-headers==3.5.0
-PyJWT==1.7.1
+isort==5.10.1

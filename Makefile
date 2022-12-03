@@ -26,3 +26,10 @@ docker-ssh:
 
 clean:
 	@find ./src -name "*.pyc" -type f -delete -o -name "__pycache__" -delete
+
+isort-check:
+	$(docker) isort --check .
+
+isort-fix:
+	$(docker) isort .
+    
