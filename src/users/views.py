@@ -26,10 +26,13 @@ class UsersAPIView(GenericViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        # Generate and return a token to be used right away
+        # Generate and return a token to be used right away.
         user = self.get_object(serializer.data.get("uuid"))
         token = user.generate_access_token()
         data = serializer.data
+        # We do this to facilitate the usability, this way the user
+        # don't need to do more than one request when login
+        # for the first time
         data["access_token"] = f"Bearer {token}"
         return Response(data, status=status.HTTP_201_CREATED)
 
