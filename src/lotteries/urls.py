@@ -2,6 +2,7 @@ from rest_framework.routers import SimpleRouter
 
 from lotteries import views
 
+
 router = SimpleRouter()
 router.trailing_slash = "/?"
 router.register("lotteries", views.LotteryAPI, basename="lottery")

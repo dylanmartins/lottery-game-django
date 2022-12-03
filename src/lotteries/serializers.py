@@ -7,9 +7,7 @@ from users.models import User
 
 
 class LotteryGameSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(
-        required=True, queryset=User.objects.all()
-    )
+    user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
     # NOTE: We could check for duplicate items inside `numbers`,
     # but this is a small detail so I'll leave it open
     numbers = serializers.ListField(

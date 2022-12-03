@@ -1,0 +1,17 @@
+[tool.black]
+line-length = 120
+target_version = ['py38']
+
+[tool.isort]
+profile="black"
+overwrite_in_place = true
+indent = 4
+combine_star = true
+combine_as_imports = true
+line_length = 120
+lines_after_imports = 2
+skip_glob = [
+    '**/migrations/**',
+    'docs/**'
+]
+filter_files = true

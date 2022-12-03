@@ -41,3 +41,8 @@ black-fix:
 
 flake8:
 	$(docker) flake8 .
+
+lint:
+	make flake8
+	make isort-check
+	make black-check

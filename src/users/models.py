@@ -8,9 +8,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    uuid = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, editable=False, unique=True
-    )
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     email = models.EmailField(
@@ -32,6 +30,4 @@ class User(AbstractUser):
             "iat": datetime.datetime.utcnow(),
         }
 
-        return jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256").decode(
-            "utf-8"
-        )
+        return jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256").decode("utf-8")

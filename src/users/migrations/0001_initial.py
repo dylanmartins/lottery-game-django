@@ -22,9 +22,7 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "last_login",
-                    models.DateTimeField(
-                        blank=True, null=True, verbose_name="last login"
-                    ),
+                    models.DateTimeField(blank=True, null=True, verbose_name="last login"),
                 ),
                 (
                     "is_superuser",
@@ -37,15 +35,11 @@ class Migration(migrations.Migration):
                 (
                     "username",
                     models.CharField(
-                        error_messages={
-                            "unique": "A user with that username already exists."
-                        },
+                        error_messages={"unique": "A user with that username already exists."},
                         help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
                         max_length=150,
                         unique=True,
-                        validators=[
-                            django.contrib.auth.validators.UnicodeUsernameValidator()
-                        ],
+                        validators=[django.contrib.auth.validators.UnicodeUsernameValidator()],
                         verbose_name="username",
                     ),
                 ),
@@ -67,9 +61,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "date_joined",
-                    models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="date joined"
-                    ),
+                    models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined"),
                 ),
                 (
                     "uuid",
@@ -85,9 +77,7 @@ class Migration(migrations.Migration):
                 ("last_name", models.CharField(max_length=200)),
                 (
                     "email",
-                    models.EmailField(
-                        max_length=255, unique=True, verbose_name="Email address"
-                    ),
+                    models.EmailField(max_length=255, unique=True, verbose_name="Email address"),
                 ),
                 ("password", models.CharField(max_length=200)),
                 ("created_at", models.DateTimeField(auto_now_add=True)),

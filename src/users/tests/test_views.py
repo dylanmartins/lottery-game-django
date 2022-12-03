@@ -9,9 +9,7 @@ def test_create_user_api__success(api_client, valid_create_user_payload):
 
     assert len(User.objects.all()) == 0
 
-    response = api_client.post(
-        reverse("users:user-register"), data=valid_create_user_payload
-    )
+    response = api_client.post(reverse("users:user-register"), data=valid_create_user_payload)
     assert response.status_code == 201
     assert response.data.get("access_token").startswith("Bearer")
 
@@ -19,35 +17,25 @@ def test_create_user_api__success(api_client, valid_create_user_payload):
 
 
 @pytest.mark.django_db(transaction=True, reset_sequences=True)
-def test_create_user_api__fails_email_already_exists(
-    api_client, valid_user, valid_create_user_payload
-):
+def test_create_user_api__fails_email_already_exists(api_client, valid_user, valid_create_user_payload):
 
     assert len(User.objects.all()) == 1
     assert valid_create_user_payload["email"] == valid_user.email
 
-    response = api_client.post(
-        reverse("users:user-register"), data=valid_create_user_payload
-    )
+    response = api_client.post(reverse("users:user-register"), data=valid_create_user_payload)
     assert response.status_code == 400
-    assert (
-        str(response.data["email"][0]) == "user with this Email address already exists."
-    )
+    assert str(response.data["email"][0]) == "user with this Email address already exists."
 
     assert len(User.objects.all()) == 1
 
 
 @pytest.mark.django_db(transaction=True, reset_sequences=True)
-def test_create_user_api__should_not_create_super_user(
-    api_client, valid_create_user_payload
-):
+def test_create_user_api__should_not_create_super_user(api_client, valid_create_user_payload):
 
     assert len(User.objects.all()) == 0
 
     valid_create_user_payload["is_staff"] = True
-    response = api_client.post(
-        reverse("users:user-register"), data=valid_create_user_payload
-    )
+    response = api_client.post(reverse("users:user-register"), data=valid_create_user_payload)
     assert response.status_code == 201
     assert response.data.get("access_token").startswith("Bearer")
 
@@ -57,16 +45,12 @@ def test_create_user_api__should_not_create_super_user(
 
 
 @pytest.mark.django_db(transaction=True, reset_sequences=True)
-def test_create_user_api__fails_if_wrong_confirm_password(
-    api_client, valid_create_user_payload
-):
+def test_create_user_api__fails_if_wrong_confirm_password(api_client, valid_create_user_payload):
     valid_create_user_payload["confirm_password"] = "wrong_password"
 
     assert len(User.objects.all()) == 0
 
-    response = api_client.post(
-        reverse("users:user-register"), data=valid_create_user_payload
-    )
+    response = api_client.post(reverse("users:user-register"), data=valid_create_user_payload)
     assert response.status_code == 500
     assert response.data["detail"] == "Passwords do not match"
 
@@ -102,9 +86,7 @@ def test_get_user_api__success(api_client, valid_user):
     ],
 )
 @pytest.mark.django_db(transaction=True, reset_sequences=True)
-def test_get_user_api__fails_invalid_token(
-    api_client, valid_user, invalid_token, expected_status_code
-):
+def test_get_user_api__fails_invalid_token(api_client, valid_user, invalid_token, expected_status_code):
 
     assert len(User.objects.all()) == 1
 
