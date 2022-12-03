@@ -65,7 +65,7 @@ def test_get_user_api__success(api_client, valid_user):
     # and then we send it as a header
     api_client.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
 
-    response = api_client.get(reverse("users:user-retrieve"))
+    response = api_client.get(reverse("users:authenticated-user"))
     assert response.status_code == 200
 
     data = response.data
@@ -92,5 +92,22 @@ def test_get_user_api__fails_invalid_token(api_client, valid_user, invalid_token
     # and then we send it as a cookie
     api_client.credentials(HTTP_AUTHORIZATION=invalid_token)
 
-    response = api_client.get(reverse("users:user-retrieve"))
+    response = api_client.get(reverse("users:authenticated-user"))
     assert response.status_code == expected_status_code
+
+
+@pytest.mark.django_db(transaction=True, reset_sequences=True)
+def test_delete_user_api__success(api_client, valid_user):
+
+    assert len(User.objects.all()) == 1
+
+    # first we generate the access token
+    token = valid_user.generate_access_token()
+    # and then we send it as a header
+    api_client.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+
+    response = api_client.delete(reverse("users:authenticated-user"))
+    assert response.status_code == 202
+    assert response.data["message"] == "Delete requested successfully"
+
+    assert len(User.objects.all()) == 0

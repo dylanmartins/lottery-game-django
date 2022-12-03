@@ -63,3 +63,11 @@ class AuthenticatedUsersAPIView(GenericViewSet):
         obj = self.get_object(request.user.pk)
         serializer = self.serializer_class(obj)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object(request.user.pk)
+        # NOTE: We could implement here a soft_delete in case the user wants to come back
+        # and keep the same lottery games, but then we would need to think about "what if another
+        # person tries to create an user with the same data, how we will now that it's the same person
+        obj.delete()
+        return Response({"message": "Delete requested successfully"}, status=status.HTTP_202_ACCEPTED)
