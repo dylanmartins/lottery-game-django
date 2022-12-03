@@ -1,9 +1,13 @@
+from __future__ import annotations
+
+from django.db.models import QuerySet
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from lotteries.models import LotteryGame, WinningBallot
-from lotteries.serializers import LotteryGameSerializer, WinningBallotSerializer
+from lotteries.serializers import (LotteryGameSerializer,
+                                   WinningBallotSerializer)
 from users.authentication import JWTAuthentication
 from utilities.rest_framework import CreateReadViewset
 
@@ -14,7 +18,7 @@ class LotteryAPI(CreateReadViewset):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[LotteryGame]:
         queryset = LotteryGame.objects.filter(user=self.request.user)
         return queryset
 

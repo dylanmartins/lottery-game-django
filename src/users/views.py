@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 from rest_framework import exceptions, status
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -13,11 +16,11 @@ class UsersAPIView(GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    def get_object(self, uuid):
+    def get_object(self, pk: str) -> User:
         queryset = self.get_queryset()
-        return get_object_or_404(queryset, uuid=uuid)
+        return get_object_or_404(queryset, pk=pk)
 
-    def register(self, request):
+    def register(self, request: Request) -> Response:
         data = request.data
 
         if data.get("password") != data.get("confirm_password"):
@@ -28,8 +31,8 @@ class UsersAPIView(GenericViewSet):
         serializer.save()
 
         # Generate and return a token to be used right away.
-        user = self.get_object(serializer.data.get("uuid"))
-        token = user.generate_access_token()
+        user: User = self.get_object(serializer.data.get("uuid"))
+        token: str = user.generate_access_token()
         data = serializer.data
         # We do this to facilitate the usability, this way the user
         # don't need to do more than one request when login
@@ -37,7 +40,7 @@ class UsersAPIView(GenericViewSet):
         data["access_token"] = f"Bearer {token}"
         return Response(data, status=status.HTTP_201_CREATED)
 
-    def get_token(self, request):
+    def get_token(self, request: Request) -> Response:
         email = request.data.get("email")
         password = request.data.get("password")
         user = User.objects.filter(email=email).first()
@@ -45,10 +48,8 @@ class UsersAPIView(GenericViewSet):
         if user is None or not user.check_password(password):
             raise exceptions.AuthenticationFailed("Login error")
 
-        response = Response(status=status.HTTP_200_OK)
-        token = user.generate_access_token()
-        response.data = {"access_token": f"Bearer {token}"}
-        return response
+        token: str = user.generate_access_token()
+        return Response({"access_token": f"Bearer {token}"}, status=status.HTTP_200_OK)
 
 
 class AuthenticatedUsersAPIView(GenericViewSet):
@@ -57,16 +58,16 @@ class AuthenticatedUsersAPIView(GenericViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get_object(self, pk):
+    def get_object(self, pk: str) -> User:
         queryset = self.get_queryset()
-        return get_object_or_404(queryset, uuid=pk)
+        return get_object_or_404(queryset, pk=pk)
 
-    def retrieve(self, request):
-        obj = self.get_object(request.user.pk)
+    def retrieve(self, request: Request) -> Response:
+        obj: User = self.get_object(request.user.pk)
         serializer = self.serializer_class(obj)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def delete(self, request, *args, **kwargs):
+    def delete(self, request: Request, *args, **kwargs) -> Response:
         obj = self.get_object(request.user.pk)
         # NOTE: We could implement here a soft_delete in case the user wants to come back
         # and keep the same lottery games, but then we would need to think about "what if another

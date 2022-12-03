@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from rest_framework import serializers
 
 from lotteries.models import LOTTERY_GAME_SIZE, LotteryGame, WinningBallot
@@ -22,7 +24,7 @@ class LotteryGameSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ["uuid", "user", "winning_game", "created_at"]
 
-    def validate_numbers(self, numbers):
+    def validate_numbers(self, numbers: list[int]) -> list[int]:
         # We sort the numbers here to create a pattern,
         # this way it will be easier to filter by numbers in the future
         numbers.sort()

@@ -47,7 +47,7 @@ def test_get_lottery_games_api__success(
     lottery_game = response.data[0]
     assert lottery_game["uuid"] == str(valid_lottery_game.pk)
     assert lottery_game["numbers"] == list(range(LOTTERY_GAME_SIZE))
-    assert lottery_game["winning_game"] == False
+    assert lottery_game["winning_game"] is False
     assert str(lottery_game["user"]) == str(valid_user.pk)
 
 
@@ -64,7 +64,7 @@ def test_get_detail_lottery_games_api__success(
     assert response.status_code == 200
     assert response.data["uuid"] == str(valid_lottery_game.pk)
     assert response.data["numbers"] == list(range(LOTTERY_GAME_SIZE))
-    assert response.data["winning_game"] == False
+    assert response.data["winning_game"] is False
     assert str(response.data["user"]) == str(valid_user.pk)
 
 
@@ -109,7 +109,7 @@ def test_create_lottery_game_api__setting_winning_game_as_true(
     )
     assert response.status_code == 201
     # it's still False because this field is read only
-    assert response.data["winning_game"] == False
+    assert response.data["winning_game"] is False
 
 
 @pytest.mark.django_db(transaction=True, reset_sequences=True)
@@ -127,7 +127,7 @@ def test_get_lottery_games_api__check_winning_game(
     assert lottery_game["uuid"] == str(valid_lottery_game.pk)
     assert lottery_game["numbers"] == list(range(LOTTERY_GAME_SIZE))
     # Set as True
-    assert lottery_game["winning_game"] == True
+    assert lottery_game["winning_game"] is True
     assert str(lottery_game["user"]) == str(valid_user.pk)
 
 

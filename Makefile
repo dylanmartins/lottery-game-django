@@ -38,3 +38,6 @@ black-check:
 
 black-fix:
 	$(docker) black .
+
+flake8:
+	$(docker) flake8 .
