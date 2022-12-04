@@ -33,3 +33,8 @@ class WinningBallotSerializer(serializers.ModelSerializer):
     class Meta:
         model = WinningBallot
         fields = ["uuid", "winning_games", "winning_numbers", "winning_users", "created_at"]
+
+
+class WinningBallotUrlParamSerializer(serializers.Serializer):
+    from_date = serializers.DateTimeField(required=False)
+    to_date = serializers.DateTimeField(required=False)

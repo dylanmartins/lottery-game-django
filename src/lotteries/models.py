@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import uuid
 
 from django.contrib.postgres.fields import ArrayField
@@ -23,7 +25,7 @@ class WinningBallot(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
-    def winning_numbers(self):
+    def winning_numbers(self) -> list[int] | None:
         if not self.winning_games:
             return None
 
@@ -31,7 +33,7 @@ class WinningBallot(models.Model):
         return winning_game.numbers
 
     @property
-    def winning_users(self):
+    def winning_users(self) -> list[str] | None:
         if not self.winning_games:
             return None
 
