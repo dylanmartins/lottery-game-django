@@ -54,7 +54,7 @@ class UsersTokenAPIView(GenericViewSet):
             raise exceptions.AuthenticationFailed("Login error")
 
         token: str = user.generate_access_token()
-        return Response({"access_token": f"Bearer {token}"}, status=status.HTTP_200_OK)
+        return Response({"access_token": f"Bearer {token}", "user": user.pk}, status=status.HTTP_200_OK)
 
 
 class AuthenticatedUsersAPIView(GenericViewSet):
