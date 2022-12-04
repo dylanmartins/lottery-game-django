@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from lotteries.models import LotteryGame, WinningBallot
-from lotteries.serializers import LotteryGameSerializer, WinningBallotSerializer, WinningBallotUrlParamSerializer
+from lotteries.serializers import LotteryGameSerializer, UrlParamSerializer, WinningBallotSerializer
 from users.authentication import JWTAuthentication
 from utilities.rest_framework import CreateReadViewset
 
@@ -26,7 +26,25 @@ class LotteryAPI(CreateReadViewset):
             return LotteryGame.objects.none()
 
         queryset = LotteryGame.objects.filter(user=self.request.user)
+        query_params = self.request.GET.dict()
+
+        # Validate filters
+        serializer = UrlParamSerializer(data=query_params)
+        serializer.is_valid(raise_exception=True)
+
+        from_date = serializer.validated_data.get("from_date", None)
+        if from_date:
+            queryset = queryset.filter(created_at__gte=from_date)
+
+        to_date = serializer.validated_data.get("to_date", None)
+        if to_date:
+            queryset = queryset.filter(created_at__lte=to_date)
+
         return queryset
+
+    @swagger_auto_schema(query_serializer=UrlParamSerializer)
+    def list(self, request: Request, *args, **kwargs) -> Response:
+        return super().list(request, *args, **kwargs)
 
     def get_object(self):
         return get_object_or_404(self.get_queryset(), pk=self.kwargs["pk"])
@@ -43,7 +61,7 @@ class WinningBallotAPI(ReadOnlyModelViewSet):
         query_params = self.request.GET.dict()
 
         # Validate filters
-        serializer = WinningBallotUrlParamSerializer(data=query_params)
+        serializer = UrlParamSerializer(data=query_params)
         serializer.is_valid(raise_exception=True)
 
         from_date = serializer.validated_data.get("from_date", None)
@@ -56,6 +74,6 @@ class WinningBallotAPI(ReadOnlyModelViewSet):
 
         return queryset
 
-    @swagger_auto_schema(query_serializer=WinningBallotUrlParamSerializer)
+    @swagger_auto_schema(query_serializer=UrlParamSerializer)
     def list(self, request: Request, *args, **kwargs) -> Response:
         return super().list(request, *args, **kwargs)
