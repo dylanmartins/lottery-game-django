@@ -141,6 +141,7 @@ CELERY_RESULT_BACKEND = "redis://redis:6379"
 CELERY_BEAT_SCHEDULE = {
     "get_todays_winning_game": {
         "task": "lotteries.tasks.get_todays_winning_game",
-        "schedule": crontab(minute="*/5"),
+        # Daily at midnight
+        "schedule": crontab(minute=0, hour=0),
     },
 }

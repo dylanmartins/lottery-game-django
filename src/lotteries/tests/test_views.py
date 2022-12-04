@@ -108,7 +108,7 @@ def test_get_lottery_games_api__check_winning_game(auth_api_client, valid_user, 
 
 
 @pytest.mark.django_db(transaction=True, reset_sequences=True)
-def test_get_winning_ballots_api__success(auth_api_client, valid_lottery_game, valid_winning_ballot):
+def test_get_winning_ballots_api__success(auth_api_client, valid_user, valid_lottery_game, valid_winning_ballot):
 
     assert len(WinningBallot.objects.all()) == 1
 
@@ -118,6 +118,8 @@ def test_get_winning_ballots_api__success(auth_api_client, valid_lottery_game, v
     lottery_game = response.data[0]
     assert lottery_game["uuid"] == str(valid_winning_ballot.pk)
     assert lottery_game["winning_games"] == [str(valid_lottery_game.pk)]
+    assert lottery_game["winning_users"] == [f"{valid_user.first_name} {valid_user.last_name}"]
+    assert lottery_game["winning_numbers"] == valid_lottery_game.numbers
 
 
 @pytest.mark.django_db(transaction=True, reset_sequences=True)

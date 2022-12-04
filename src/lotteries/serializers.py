@@ -32,4 +32,4 @@ class LotteryGameSerializer(serializers.ModelSerializer):
 class WinningBallotSerializer(serializers.ModelSerializer):
     class Meta:
         model = WinningBallot
-        fields = "__all__"
+        fields = ["uuid", "winning_games", "winning_numbers", "winning_users", "created_at"]

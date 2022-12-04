@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 @shared_task
 def get_todays_winning_game():
 
-    logger.info("Starting task get_todays_winning_game")
+    logger.info(f"Starting task get_todays_winning_game now {datetime.now()}")
 
     today_datetime = datetime.today()
     # Since this task executes after midnight we need to get the day before
