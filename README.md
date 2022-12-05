@@ -52,6 +52,12 @@ It was a really fun project, with it I could reinforce some things I do automati
 
 - The project has documentation but I used a django auto generator, and I'm not a big fan of it :laughing: for the time sake it's worth, but based on **my experience in Django** if you want to have a more detailed API spec it's better to do it manually and direct create a collection in `Postman` or make an openapi spec manually using `stoplight`.
 
+## Domain design
+
+![plot](./domain_design.png)
+
+The `User` model has a `OneToMany` relationship with `LotteryGame`, and since all users can check the `WinningBallot` I thought it would be simpler to not create any relationship and just add two properties (`winning_numbers` and `winning_users`) to fetch this data if necessary.
+
 ## Author
 
 * **Dylan Martins Janine de Andrade** - [github](https://github.com/dylanmartins) [linkedin](https://www.linkedin.com/in/dylan-m-j-andrade/)
