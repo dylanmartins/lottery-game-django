@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from unittest.mock import patch
 
 import pytest
@@ -48,6 +48,7 @@ def test_get_todays_winning_game__should_not_sort_winning_games(logging_mock, va
     assert len(WinningBallot.objects.all()) == 0
     assert len(LotteryGame.objects.all()) == 1
 
+    # Set the winning_game as True, it means that this game already won something
     valid_lottery_game.winning_game = True
     valid_lottery_game.save()
 
@@ -55,6 +56,33 @@ def test_get_todays_winning_game__should_not_sort_winning_games(logging_mock, va
 
     # We didn't create a new ballot because the only game was set as winning_game
     assert len(WinningBallot.objects.all()) == 0
+    assert len(LotteryGame.objects.all()) == 1
+
+    assert logging_mock.called
+    assert logging_mock.call_args[0][0] == "There was no games today!"
+
+
+@pytest.mark.django_db(transaction=True, reset_sequences=True)
+@freeze_time(datetime.today() + timedelta(days=1))
+@patch("lotteries.tasks.logger.info")
+def test_get_todays_winning_game__no_games_today(logging_mock, valid_lottery_game):
+    assert len(WinningBallot.objects.all()) == 0
+    assert len(LotteryGame.objects.all()) == 1
+
+    # Checking if the winning_game, this means that this is
+    # a valid game to participate the ballot
+    assert valid_lottery_game.winning_game is False
+
+    # Set the game_date to tomorrow
+    valid_lottery_game.game_date = date.today() + timedelta(days=1)
+    valid_lottery_game.save()
+
+    get_todays_winning_game()
+
+    # This way when we filtered by game_date there
+    # was no games for today's ballot
+    assert len(WinningBallot.objects.all()) == 0
+    assert len(LotteryGame.objects.all()) == 1
 
     assert logging_mock.called
     assert logging_mock.call_args[0][0] == "There was no games today!"

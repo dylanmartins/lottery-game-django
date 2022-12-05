@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import uuid
+from datetime import date
 
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
@@ -15,6 +16,8 @@ class LotteryGame(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey(User, related_name="lottery_games", on_delete=models.CASCADE)
     numbers = ArrayField(models.IntegerField(db_index=True), size=LOTTERY_GAME_SIZE, default=list)
+    # Date that the game will be participating in the ballot
+    game_date = models.DateField(default=date.today)
     created_at = models.DateTimeField(auto_now_add=True)
     winning_game = models.BooleanField(default=False)
 

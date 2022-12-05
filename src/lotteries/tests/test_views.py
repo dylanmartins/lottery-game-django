@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 import pytest
 from django.urls import reverse
 
@@ -13,6 +15,37 @@ def test_create_lottery_game_api__success(auth_api_client, valid_create_lottery_
     assert response.status_code == 201
 
     assert len(LotteryGame.objects.filter(user=valid_user)) == 1
+
+
+@pytest.mark.django_db(transaction=True, reset_sequences=True)
+def test_create_lottery_game_api__for_specific_date(auth_api_client, valid_create_lottery_payload, valid_user):
+
+    assert len(LotteryGame.objects.filter(user=valid_user)) == 0
+
+    tomorrow = date.today() + timedelta(days=1)
+    valid_create_lottery_payload["game_date"] = tomorrow.strftime("%Y-%m-%d")
+
+    response = auth_api_client.post(reverse("lotteries:lottery-list"), data=valid_create_lottery_payload)
+    assert response.status_code == 201
+
+    lottery_game = LotteryGame.objects.get(pk=response.data["uuid"])
+    assert lottery_game.game_date == tomorrow
+
+
+@pytest.mark.django_db(transaction=True, reset_sequences=True)
+def test_create_lottery_game_api__fails_trying_to_play_past_games(
+    auth_api_client, valid_create_lottery_payload, valid_user
+):
+
+    assert len(LotteryGame.objects.filter(user=valid_user)) == 0
+
+    # Trying to create a game for past ballots
+    two_days_ago = date.today() - timedelta(days=2)
+    valid_create_lottery_payload["game_date"] = two_days_ago.strftime("%Y-%m-%d")
+
+    response = auth_api_client.post(reverse("lotteries:lottery-list"), data=valid_create_lottery_payload)
+    assert response.status_code == 400
+    assert str(response.data["game_date"][0]) == "You can't play past lottery games!"
 
 
 @pytest.mark.django_db(transaction=True, reset_sequences=True)
@@ -38,6 +71,7 @@ def test_get_lottery_games_api__success(auth_api_client, valid_user, valid_lotte
     assert lottery_game["uuid"] == str(valid_lottery_game.pk)
     assert lottery_game["numbers"] == list(range(LOTTERY_GAME_SIZE))
     assert lottery_game["winning_game"] is False
+    assert lottery_game["game_date"] == date.today().strftime("%Y-%m-%d")
     assert str(lottery_game["user"]) == str(valid_user.pk)
 
 

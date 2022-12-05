@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from celery import shared_task
 from django.db import transaction
@@ -16,17 +16,13 @@ def get_todays_winning_game():
 
     logger.info(f"Starting task get_todays_winning_game now {datetime.now()}")
 
-    today_datetime = datetime.today()
     # Since this task executes after midnight we need to get the day before
-    yesterday = today_datetime - timedelta(days=1)
+    todays_date = date.today()
+    yesterday = todays_date - timedelta(days=1)
 
-    # Get all games from 00:00:00 to 23:59:59
-    start_date = yesterday.replace(hour=0, minute=0, second=0)
-    end_date = yesterday.replace(hour=23, minute=59, second=59)
+    logger.info(f"Getting all lottery games from {yesterday}")
 
-    logger.info(f"Getting all lottery games from {start_date} to {end_date}")
-
-    todays_lottery_games = LotteryGame.objects.filter(created_at__range=(start_date, end_date), winning_game=False)
+    todays_lottery_games = LotteryGame.objects.filter(game_date=yesterday, winning_game=False)
     if not todays_lottery_games:
         logger.info("There was no games today!")
         return
