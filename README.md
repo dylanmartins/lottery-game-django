@@ -16,15 +16,15 @@ To run this project you will need to have `Python`, `Docker` and `docker-compose
 
 1. Execute the command `make run`, this will start to spin up all containers automatically.
 > :warning: The containers may raise some errors related to database connection, don't be afraid they will restart and run again automatically :) This happens because postgres takes more time to start accepting requests.
-2. After everything is up and running, execute the command `make migrate` when docker is already running, this will apply all django migrations
+2. After everything is up and running, execute the command `make migrate`, this will apply all django migrations
 3. Finally you can access the API documentation in <http://localhost:8000/swagger>
 
 ## API Utilization
 
-- This API uses a `JWT Token` to manage the access to the API, to generate this token you first need to create a `user` on the endpoint `/users/register`, this endpoint already returns the `access_token` to be used on the header, like that:
+- This API uses a `JWT Token` to manage the access to the API, to generate this token you need to create an `user` on the endpoint `/users/register`, this endpoint already returns the `access_token` to be used on the header, like that:
 `--header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ...'` or through the OpenAPI UI.
 
-- If you forgot your `JWT Token` or it expired you can generate a new one on the endpoint `/users/token`.
+- If you **forgot** your `JWT Token` or it **expired** you can generate a new one on the endpoint `/users/token`.
 
 - In some endpoints you need to pass your user `UUID`, this is why I created the endpoint `/users/me`, it returns the basic info from your user.
 
@@ -34,7 +34,7 @@ To run this project you will need to have `Python`, `Docker` and `docker-compose
 
 ## Tasks
 
-- `get_todays_winning_game`: This task executes automatically every day at midnight, it gets the games from the past day and choses a random winner. Since right now there is always only ONE winner, in case there are multiple games with the same `numbers` this task filters the first game created as the winner.
+- `get_todays_winning_game`: This task executes automatically every day at midnight, it gets the games from the past day and chooses a random winner. Right now there will be always only **ONE** winner, in case there are multiple games with the same `numbers` this task chooses the first game created as the winner.
 
 ## Considerations
 
